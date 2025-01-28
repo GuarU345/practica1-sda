@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\AuthController;
+use App\Http\Controllers\ValidationController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -14,5 +16,20 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    return auth()->check() ? redirect('/dashboard') : redirect('/login');
+});
+
+Route::controller(AuthController::class)->group(function () {
+    Route::get('/login', 'viewLogin')->name('login')->middleware('guest');
+    Route::post('/login', 'login');
+    Route::get('/register', 'viewRegister')->name('register')->middleware('guest');
+    Route::post('/register', 'register');
+});
+
+Route::middleware('auth')->group(function () {
+    Route::get('/dashboard', [AuthController::class, 'viewDashboard'])->name('dashboard');
+});
+
+Route::controller(ValidationController::class)->group(function () {
+    Route::get('/verify-code', 'viewVerifyCode')->name('verify-code');
 });
