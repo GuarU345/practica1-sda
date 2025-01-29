@@ -11,24 +11,29 @@
     <form class="bg-white p-6 shadow-lg" action="{{ route('login') }}" method="POST">
         @csrf
         <h4 class="text-center mb-4">Inicio de Sesión</h4>
+        @if ($errors->any())
+                <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative" role="alert">
+                    <strong class="font-bold">¡Error!</strong>
+                    <span class="block sm:inline">Por favor, corrige los siguientes errores:</span>
+                    <ul class="mt-3 list-disc list-inside text-sm text-red-600">
+                        @foreach ($errors->all() as $error)
+                            <li>{{ $error }}</li>
+                        @endforeach
+                    </ul>
+                </div>
+        @endif
         <div class="mb-4">
             <label for="email" class="text-sm font-medium text-gray-700">Correo electrónico</label>
-            <input type="email" class="mt-1 w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500" id="email" name="email" required value="{{ old('email') }}">
-            @error('email')
-            <span class="text-red-500 text-sm">{{ $message }}</span>
-            @enderror
+            <input type="email" class="mt-1 w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500" id="email" name="email" value="{{ old('email') }}">
         </div>
 
         <div class="mb-4">
             <label for="password" class="text-sm font-medium text-gray-700">Contraseña</label>
-            <input type="password" class="mt-1 w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500" id="password" name="password" required>
-            @error('password')
-            <span class="text-red-500 text-sm">{{ $message }}</span>
-            @enderror
+            <input type="password" class="mt-1 w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500" id="password" name="password">
         </div>
 
         <button type="submit" class="w-full bg-blue-500 text-white p-2 rounded-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500">Iniciar sesión</button>
-        <a class="text-center mt-4 text-blue-500 font-semibold" href="/register">No tienes cuenta, registrate</a>
+        <a class="block text-center mt-4 text-blue-500 font-semibold" href="/register">No tienes cuenta, registrate</a>
     </form>
 </body>
 </html>

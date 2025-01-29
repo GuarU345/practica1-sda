@@ -32,6 +32,6 @@ Route::middleware('auth')->group(function () {
 });
 
 Route::controller(ValidationController::class)->group(function () {
-    Route::get('/verify-code/{userId}', 'viewVerifyCode')->name('verify-code');
-    Route::post('/verify-code/{userId}', 'verifyCode');
+    Route::get('/verify-code/{userId}', 'viewVerifyCode')->name('verify-code')->middleware('signed');
+    Route::post('/verify-code/{userId}', 'verifyCode')->middleware('signed');
 });

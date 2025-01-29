@@ -7,7 +7,7 @@ use Illuminate\Foundation\Http\FormRequest;
 class UserRegisterRequest extends FormRequest
 {
     /**
-     * Determine if the user is authorized to make this request.
+     * Determina si el usuario está autorizado para hacer esta solicitud.
      *
      * @return bool
      */
@@ -17,7 +17,7 @@ class UserRegisterRequest extends FormRequest
     }
 
     /**
-     * Get the validation rules that apply to the request.
+     * Obtiene las reglas de validación que se aplican a la solicitud.
      *
      * @return array<string, mixed>
      */
@@ -25,19 +25,25 @@ class UserRegisterRequest extends FormRequest
     {
         return [
             'name' => 'required|string',
-            'email' => 'required|email',
+            'email' => 'required|email|unique:users,email',
             'password' => 'required|string|min:6'
         ];
     }
 
+    /**
+     * Define los mensajes de error personalizados para las reglas de validación.
+     *
+     * @return array<string, string>
+     */
     public function messages()
     {
         return [
             'name.required' => 'El nombre es requerido',
+            'email.string' => 'El email debe ser un texto válido',
             'email.required' => 'El email es requerido',
-            'email.email' => 'El email debe de ser un email valido',
+            'email.unique' => 'Este correo ya está registrado, intenta con otro',
             'password.required' => 'La contraseña es requerida',
-            'password.min' => 'La contraseña debe de tener al menos 6 caracteres'
+            'password.min' => 'La contraseña debe tener al menos 6 caracteres'
         ];
     }
 }

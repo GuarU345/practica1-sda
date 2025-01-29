@@ -11,35 +11,37 @@
     <form class="bg-white p-6 shadow-lg" action="{{ route('register') }}" method="POST">
         @csrf
         <h4 class="text-center mb-4">Registro</h4>
+        @if ($errors->any())
+                <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative" role="alert">
+                    <strong class="font-bold">¡Error!</strong>
+                    <span class="block sm:inline">Por favor, corrige los siguientes errores:</span>
+                    <ul class="mt-3 list-disc list-inside text-sm text-red-600">
+                        @foreach ($errors->all() as $error)
+                            <li>{{ $error }}</li>
+                        @endforeach
+                    </ul>
+                </div>
+        @endif
         <div class="mb-4">
             <label class="text-sm font-medium text-gray-700" for="name">
                 Nombre
                 <input class="mt-1 w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500" type="text" id="name" name="name">
-                @error('name')
-                <span class="text-red-500 text-sm">{{ $message }}</span>
-                @enderror
             </label>
         </div>
         <div class="mb-4">
             <label class="text-sm font-medium text-gray-700" for="email">
                 Email
                 <input class="mt-1 w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500" type="email" id="email" name="email">
-                @error('email')
-                <span class="text-red-500 text-sm">{{ $message }}</span>
-                @enderror
             </label>
         </div>
         <div class="mb-4">
             <label class="text-sm font-medium text-gray-700" for="password">
                 Contraseña
                 <input class="mt-1 w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500" type="password" id="password" name="password">
-                @error('password')
-                <span class="text-red-500 text-sm">{{ $message }}</span>
-                @enderror
             </label>
         </div>  
         <button type="submit" class="w-full bg-blue-500 text-white p-2 rounded-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500">Registrarme</button>
-        <a class="text-center mt-4 text-blue-500 font-semibold" href="/login">Ya tienes cuenta, ve a iniciar sesión</a>
+        <a class="block text-center mt-4 text-blue-500 font-semibold" href="/login">Ya tienes cuenta, ve a iniciar sesión</a>
     </form>
 </body>
 </html>

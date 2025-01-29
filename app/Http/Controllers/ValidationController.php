@@ -11,11 +11,13 @@ use ErrorException;
 use Illuminate\Database\QueryException;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
-use Illuminate\View\View;
 use Illuminate\Support\Facades\Mail;
 
 class ValidationController extends Controller
 {
+    /**
+     * Muestra la vista del formulario para validar el codigo.
+     */
     public function viewVerifyCode($userId)
     {
         $user = User::find($userId);
@@ -25,6 +27,7 @@ class ValidationController extends Controller
     public static function generateCode($user)
     {
         try {
+            //desactivar los demas codigos que tiene el usuario
             UserCode::where('user_id', $user->id)->update(['active' => false]);
 
             $userCode = UserCode::create([
@@ -55,14 +58,14 @@ class ValidationController extends Controller
 
         // Verificar si existe un código activo
         if (!$currentCode) {
-            return back()->with('error', 'No hay un código activo.');
+            return back()->withError(['error' => 'No hay un código activo.']);
         }
 
         // Verificar si el código ha expirado (más de 5 minutos)
         $expirationTime = Carbon::parse($currentCode->expires_at)->addMinutes(5);
 
         if (now()->greaterThan($expirationTime)) {
-            return back()->with('error', 'El código ha expirado.');
+            return back()->withErrors(['error' => 'El código ha expirado.']);
         }
 
         // Comparar el código ingresado con el registrado
@@ -71,7 +74,7 @@ class ValidationController extends Controller
             Auth::login($currentUser);
             return redirect()->route('dashboard')->with('message', 'Código validado exitosamente');
         } else {
-            return back()->with('error', 'Código incorrecto.');
+            return back()->withErrors(['error' => 'Código incorrecto.']);
         }
     }
 }

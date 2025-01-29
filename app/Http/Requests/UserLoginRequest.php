@@ -7,7 +7,7 @@ use Illuminate\Foundation\Http\FormRequest;
 class UserLoginRequest extends FormRequest
 {
     /**
-     * Determine if the user is authorized to make this request.
+     * Determina si el usuario está autorizado para hacer esta solicitud.
      *
      * @return bool
      */
@@ -17,7 +17,7 @@ class UserLoginRequest extends FormRequest
     }
 
     /**
-     * Get the validation rules that apply to the request.
+     * Obtiene las reglas de validación que se aplican a la solicitud.
      *
      * @return array<string, mixed>
      */
@@ -29,6 +29,11 @@ class UserLoginRequest extends FormRequest
         ];
     }
 
+    /**
+     * Define los mensajes de error personalizados para las reglas de validación.
+     *
+     * @return array<string, string>
+     */
     public function messages()
     {
         return [
