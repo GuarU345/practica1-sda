@@ -28,6 +28,7 @@ Route::controller(AuthController::class)->group(function () {
 
 Route::middleware('auth')->group(function () {
     Route::get('/dashboard', [AuthController::class, 'viewDashboard'])->name('dashboard');
+    Route::post('/logout', [AuthController::class, 'logout']);
 });
 
 Route::controller(ValidationController::class)->group(function () {
