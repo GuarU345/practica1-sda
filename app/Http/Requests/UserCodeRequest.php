@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class UserRegisterRequest extends FormRequest
+class UserCodeRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -24,20 +24,16 @@ class UserRegisterRequest extends FormRequest
     public function rules()
     {
         return [
-            'name' => 'required|string',
-            'email' => 'required|email',
-            'password' => 'required|string|min:6'
+            'code' => 'required|numeric|digits:6'
         ];
     }
 
     public function messages()
     {
         return [
-            'name.required' => 'El nombre es requerido',
-            'email.required' => 'El email es requerido',
-            'email.email' => 'El email debe de ser un email valido',
-            'password.required' => 'La contraseña es requerida',
-            'password.min' => 'La contraseña debe de tener al menos 6 caracteres'
+            'code.required' => 'El codigo es requerido',
+            'code.numeric' => 'El codigo debe de ser un numero',
+            'code.digits' => 'El codigo debe de ser de 6 numeros'
         ];
     }
 }

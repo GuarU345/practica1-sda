@@ -32,5 +32,6 @@ Route::middleware('auth')->group(function () {
 });
 
 Route::controller(ValidationController::class)->group(function () {
-    Route::get('/verify-code', 'viewVerifyCode')->name('verify-code');
+    Route::get('/verify-code/{userId}', 'viewVerifyCode')->name('verify-code');
+    Route::post('/verify-code/{userId}', 'verifyCode');
 });

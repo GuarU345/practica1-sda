@@ -17,6 +17,7 @@ return new class extends Migration
             $table->id(); //Identificador unico de la tabla
             $table->unsignedBigInteger('user_id'); // Relación con la tabla users
             $table->string('code', 6); // Código de 6 dígitos
+            $table->boolean('active'); // Campo para saber si el codigo aun esta activo
             $table->timestamp('expires_at'); // Fecha de expiración del código
             $table->timestamps(); // Campos created_at y updated_at
         });

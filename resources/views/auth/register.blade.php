@@ -37,16 +37,7 @@
                 <span class="text-red-500 text-sm">{{ $message }}</span>
                 @enderror
             </label>
-        </div>
-        <div class="mb-4">
-            <label class="text-sm font-medium text-gray-700" for="c_password">
-                Confirmar Contraseña
-                <input class="mt-1 w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500" type="password" id="c_password" name="c_password">
-                @error('c_password')
-                <span class="text-red-500 text-sm">{{ $message }}</span>
-                @enderror
-            </label>
-        </div>    
+        </div>  
         <button type="submit" class="w-full bg-blue-500 text-white p-2 rounded-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500">Registrarme</button>
         <a class="text-center mt-4 text-blue-500 font-semibold" href="/login">Ya tienes cuenta, ve a iniciar sesión</a>
     </form>

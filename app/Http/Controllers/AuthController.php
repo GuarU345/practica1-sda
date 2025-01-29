@@ -42,8 +42,10 @@ class AuthController extends Controller
 
             return redirect()->route('login')->with('message', 'Usuario Registrado Correctamente');
         } catch (QueryException $e) {
+            Log::error('Se produjo un error', ['exception' => $e->getMessage()]);
             return back()->withErrors(['error' => 'Error al tratar de registrarte']);
         } catch (ErrorException $e) {
+            Log::error('Se produjo un error', ['exception' => $e->getMessage()]);
             return back()->withErrors(['error' => 'No se pudo realizar la petición']);
         }
     }
@@ -51,13 +53,13 @@ class AuthController extends Controller
     public function login(UserLoginRequest $request)
     {
         $validatedData = $request->validated();
+        $userExists = User::where('email', $validatedData['email'])->first();
 
         try {
-            if (Auth::attempt(['email' => $validatedData['email'], 'password' => $validatedData['password']])) {
-                $validationController = new ValidationController();
-                $validationController->generateCode(Auth::getUser());
+            if ($userExists && Hash::check($validatedData['password'], $userExists->password)) {
+                ValidationController::generateCode($userExists);
 
-                return redirect()->route('verify-code')->with('message', 'Usuario Logueado Correctamente');
+                return redirect()->route('verify-code', ['userId' => $userExists->id])->with('message', 'Usuario Logueado Correctamente');
             }
 
             return back()->withErrors(['error' => 'Credenciales Invalidas']);
