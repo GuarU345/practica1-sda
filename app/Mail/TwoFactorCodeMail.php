@@ -14,15 +14,17 @@ class TwoFactorCodeMail extends Mailable
     use Queueable, SerializesModels;
 
     public $code;
+    public $url;
 
     /**
      * Create a new message instance.
      *
      * @return void
      */
-    public function __construct($code)
+    public function __construct($code, $url)
     {
         $this->code = $code;
+        $this->url = $url;
     }
 
     /**

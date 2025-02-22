@@ -22,6 +22,12 @@
                     </ul>
                 </div>
         @endif
+
+        @if($message)
+            <div>
+                <p>{{$message}}</p>
+            </div>
+        @endif
         <div class="mb-4">
             <label for="email" class="text-sm font-medium text-gray-700">Correo electrónico</label>
             <input type="email" class="mt-1 w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500" id="email" name="email" value="{{ old('email') }}">

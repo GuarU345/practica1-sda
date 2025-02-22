@@ -45,6 +45,7 @@
     <div class="container">
         <p class="header">{{ __('Tu código de autenticación es:') }}</p>
         <h2 class="token">{{ $code }}</h2>
+        <a href="{{ $url }}">Verificar</a>
         <p class="footer">{{ __('Este código expira en 5 minutos.') }}</p>
     </div>
 </body>

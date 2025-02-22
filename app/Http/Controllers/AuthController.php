@@ -10,7 +10,6 @@ use Illuminate\Database\QueryException;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Log;
-use Illuminate\Support\Facades\URL;
 use Illuminate\View\View;
 
 class AuthController extends Controller
@@ -85,13 +84,9 @@ class AuthController extends Controller
             if ($userExists && Hash::check($validatedData['password'], $userExists->password)) {
                 // Se genera un código de verificación para el usuario.
                 ValidationController::generateCode($userExists);
-
-                return redirect()->route('verify-code', ['userId' => $userExists->id])
-                    ->with('message', 'Usuario Logueado Correctamente')
-                    ->header('Location', URL::signedRoute('verify-code', ['userId' => $userExists->id]));
+            } else {
+                return back()->withErrors(['error' => 'Credenciales Invalidas']);
             }
-
-            return back()->withErrors(['error' => 'Credenciales Invalidas']);
         } catch (QueryException $e) {
             // Manejo de error si hay un problema con la base de datos.
             Log::error('Se produjo un error', ['exception' => $e->getMessage()]);
