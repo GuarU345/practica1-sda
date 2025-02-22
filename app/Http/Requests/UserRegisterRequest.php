@@ -26,7 +26,8 @@ class UserRegisterRequest extends FormRequest
         return [
             'name' => 'required|string',
             'email' => 'required|email|unique:users,email',
-            'password' => 'required|string|min:6'
+            'password' => 'required|string|min:6|regex:/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[\W_]).{8,}$/',
+            'g-recaptcha-response' => 'required'
         ];
     }
 
@@ -43,7 +44,9 @@ class UserRegisterRequest extends FormRequest
             'email.required' => 'El email es requerido',
             'email.unique' => 'Este correo ya está registrado, intenta con otro',
             'password.required' => 'La contraseña es requerida',
-            'password.min' => 'La contraseña debe tener al menos 6 caracteres'
+            'password.min' => 'La contraseña debe tener al menos 6 caracteres',
+            'password.regex' => 'La contraseña debe contener al menos una letra mayúscula, una letra minúscula, un número y un símbolo.',
+            'g-recaptcha-response.required' => 'Es necesario completar la verificación de CAPTCHA.'
         ];
     }
 }

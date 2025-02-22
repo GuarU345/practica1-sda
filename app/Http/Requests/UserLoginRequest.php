@@ -25,7 +25,8 @@ class UserLoginRequest extends FormRequest
     {
         return [
             'email' => 'required|email',
-            'password' => 'required|string'
+            'password' => 'required|string',
+            'g-recaptcha-response' => 'required'
         ];
     }
 
@@ -40,6 +41,7 @@ class UserLoginRequest extends FormRequest
             'email.required' => 'El email es requerido',
             'email.email' => 'El email debe de ser un email valido',
             'password.required' => 'La contraseña es requerida',
+            'g-recaptcha-response.required' => 'Es necesario completar la verificación de CAPTCHA.'
         ];
     }
 }

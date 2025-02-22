@@ -11,6 +11,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Log;
 use Illuminate\View\View;
+use ReCaptcha\ReCaptcha;
 
 class AuthController extends Controller
 {
@@ -48,6 +49,12 @@ class AuthController extends Controller
     {
         $validatedData = $request->validated();
 
+        $recaptcha = new ReCaptcha(env('RECAPTCHA_SECRET_KEY'));
+        $response = $recaptcha->verify($request->input('g-recaptcha-response'), $request->ip());
+        if (!$response->isSuccess()) {
+            return back()->withErrors(['errors' => 'Por favor, verifica que no eres un robot.']);
+        }
+
         try {
             // Se crea un nuevo usuario con los datos validados.
             User::create([
@@ -56,7 +63,7 @@ class AuthController extends Controller
                 'password' => Hash::make($validatedData['password']) // Se encripta la contraseña.
             ]);
 
-            return redirect()->route('login')->with('message', 'Usuario Registrado Correctamente');
+            return back()->with('message', 'Usuario Registrado Correctamente');
         } catch (QueryException $e) {
             // Manejo de error si hay un problema con la base de datos.
             Log::error('Se produjo un error', ['exception' => $e->getMessage()]);
@@ -78,6 +85,12 @@ class AuthController extends Controller
     {
         $validatedData = $request->validated();
         $userExists = User::where('email', $validatedData['email'])->first();
+
+        $recaptcha = new ReCaptcha(env('RECAPTCHA_SECRET_KEY'));
+        $response = $recaptcha->verify($request->input('g-recaptcha-response'), $request->ip());
+        if (!$response->isSuccess()) {
+            return back()->withErrors(['errors' => 'Por favor, verifica que no eres un robot.']);
+        }
 
         try {
             // Se verifica que el usuario exista y la contraseña sea correcta.
