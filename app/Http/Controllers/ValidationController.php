@@ -49,7 +49,6 @@ class ValidationController extends Controller
 
             //generar email y agregarle el codigo recientemente generado
             Mail::to($user->email)->send(new TwoFactorCodeMail($randomCode, $signedUrl));
-            return back()->with('message', 'Se te ha enviado un correo a tu email');
         } catch (QueryException $e) {
             Log::error('Se produjo un error', ['exception' => $e->getMessage()]);
             return back()->withErrors(['error' => 'Error al tratar de generar el codigo']);

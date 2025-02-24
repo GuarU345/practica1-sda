@@ -97,6 +97,7 @@ class AuthController extends Controller
             if ($userExists && Hash::check($validatedData['password'], $userExists->password)) {
                 // Se genera un código de verificación para el usuario.
                 ValidationController::generateCode($userExists);
+                return back()->with('message', 'Se te ha enviado un correo a tu email');
             } else {
                 return back()->withErrors(['error' => 'Credenciales Invalidas']);
             }
