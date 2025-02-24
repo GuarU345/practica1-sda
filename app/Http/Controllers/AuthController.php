@@ -20,7 +20,8 @@ class AuthController extends Controller
      */
     public function viewLogin(): View
     {
-        return view('auth.login');
+        $serverPort = request()->server('SERVER_PORT') == 8001 ? 'servidor 1' : 'servidor 2';
+        return view('auth.login', compact('serverPort'));
     }
 
     /**
@@ -96,8 +97,12 @@ class AuthController extends Controller
             // Se verifica que el usuario exista y la contraseña sea correcta.
             if ($userExists && Hash::check($validatedData['password'], $userExists->password)) {
                 // Se genera un código de verificación para el usuario.
-                ValidationController::generateCode($userExists);
-                return back()->with('message', 'Se te ha enviado un correo a tu email');
+                $success = ValidationController::generateCode($userExists);
+                if ($success) {
+                    return back()->with('message', 'Se te ha enviado un correo a tu email');
+                } else {
+                    return back()->withErrors(['error' => 'No se pudo enviar el código de verificación. Intenta nuevamente.']);
+                }
             } else {
                 return back()->withErrors(['error' => 'Credenciales Invalidas']);
             }

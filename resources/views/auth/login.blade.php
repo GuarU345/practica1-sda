@@ -10,7 +10,7 @@
 <body class="flex justify-center items-center h-screen bg-gray-200">
     <form class="bg-white p-6 shadow-lg" action="{{ route('login') }}" method="POST">
         @csrf
-        <h4 class="text-center mb-4">Inicio de Sesión</h4>
+        <h4 class="text-center mb-4">Inicio de Sesión</h4> <p>Estas en el <span>{{$serverPort}}</span></p>
 
         @if(session('message'))
         <div class="p-4 mb-4 text-sm text-green-800 rounded-lg bg-green-50 dark:bg-gray-800 dark:text-green-400" role="alert">

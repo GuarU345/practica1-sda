@@ -8,6 +8,7 @@ use App\Models\User;
 use App\Models\UserCode;
 use Carbon\Carbon;
 use ErrorException;
+use Exception;
 use Illuminate\Database\QueryException;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
@@ -29,32 +30,37 @@ class ValidationController extends Controller
     public static function generateCode($user)
     {
         try {
-            //desactivar los demas codigos que tiene el usuario
+            // Desactivar códigos previos
             UserCode::where('user_id', $user->id)->update(['active' => false]);
 
+            // Generar código aleatorio
             $randomCode = rand(100000, 999999);
+
+            // Guardar en la base de datos (encriptado)
             UserCode::create([
                 'user_id' => $user->id,
-                'code' => Hash::make($randomCode),
+                'code' => Hash::make($randomCode), // Importante recordar que esto está hasheado
                 'active' => true,
                 'expires_at' => Carbon::now()->addMinutes(5)
             ]);
 
-            // Genera un enlace temporal para la verificación del código.
+            // Generar enlace de verificación
             $signedUrl = URL::temporarySignedRoute(
                 'verify-code',
                 now()->addMinutes(30),
                 ['userId' => $user->id]
             );
 
-            //generar email y agregarle el codigo recientemente generado
+            // Enviar correo
             Mail::to($user->email)->send(new TwoFactorCodeMail($randomCode, $signedUrl));
+
+            return true; // Indica que todo salió bien
         } catch (QueryException $e) {
-            Log::error('Se produjo un error', ['exception' => $e->getMessage()]);
-            return back()->withErrors(['error' => 'Error al tratar de generar el codigo']);
-        } catch (ErrorException $e) {
-            Log::error('Se produjo un error', ['exception' => $e->getMessage()]);
-            return back()->withErrors(['error' => 'No se pudo realizar la petición']);
+            Log::error('Error en la base de datos al generar código', ['exception' => $e->getMessage()]);
+            return false;
+        } catch (Exception $e) {
+            Log::error('Error general al generar código', ['exception' => $e->getMessage()]);
+            return false;
         }
     }
 
