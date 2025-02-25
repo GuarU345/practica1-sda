@@ -45,7 +45,7 @@
             </label>
         </div>  
 
-        <div class="g-recaptcha mt-2 w-full" data-sitekey="{{ env('RECAPTCHA_SITE_KEY') }}"></div>
+        <div class="g-recaptcha mt-2 w-full" data-sitekey="{{ config('services.recaptcha.site_key') }}"></div>
 
         <button type="submit" class="w-full bg-blue-500 text-white p-2 rounded-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500">Registrarme</button>
         <a class="block text-center mt-4 text-blue-500 font-semibold" href="/login">Ya tienes cuenta, ve a iniciar sesión</a>
