@@ -50,7 +50,7 @@ class AuthController extends Controller
     {
         $validatedData = $request->validated();
 
-        $recaptcha = new ReCaptcha(env('RECAPTCHA_SECRET_KEY'));
+        $recaptcha = new ReCaptcha(config('services.recaptcha.secret_key'));
         $response = $recaptcha->verify($request->input('g-recaptcha-response'), $request->ip());
         if (!$response->isSuccess()) {
             return back()->withErrors(['errors' => 'Por favor, verifica que no eres un robot.']);
@@ -87,7 +87,7 @@ class AuthController extends Controller
         $validatedData = $request->validated();
         $userExists = User::where('email', $validatedData['email'])->first();
 
-        $recaptcha = new ReCaptcha(env('RECAPTCHA_SECRET_KEY'));
+        $recaptcha = new ReCaptcha(config('services.recaptcha.secret_key'));
         $response = $recaptcha->verify($request->input('g-recaptcha-response'), $request->ip());
         if (!$response->isSuccess()) {
             return back()->withErrors(['errors' => 'Por favor, verifica que no eres un robot.']);
