@@ -64,7 +64,7 @@ class AuthController extends Controller
                 'password' => Hash::make($validatedData['password']) // Se encripta la contraseña.
             ]);
 
-            return back()->with('message', 'Usuario Registrado Correctamente');
+            return redirect()->route('login')->with('message', 'Usuario Registrado Correctamente');
         } catch (QueryException $e) {
             // Manejo de error si hay un problema con la base de datos.
             Log::error('Se produjo un error', ['exception' => $e->getMessage()]);
