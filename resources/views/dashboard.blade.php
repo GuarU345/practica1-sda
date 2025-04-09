@@ -21,6 +21,7 @@
         @endif
         
         <p>Hello World</p>
+	<p>Estas en el <span>{{$serverPort}}</span></p>
     </div>
 </body>
 </html>

@@ -37,7 +37,8 @@ class AuthController extends Controller
      */
     public function viewDashboard(): View
     {
-        return view('dashboard');
+	$serverPort = request()->server('SERVER_PORT') == 8001 ? 'servidor 1' : 'servidor 2';
+        return view('dashboard',compact('serverPort'));
     }
 
     /**
