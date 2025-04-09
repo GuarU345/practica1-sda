@@ -46,11 +46,31 @@ return [
         'mysql' => [
             'driver' => 'mysql',
             'url' => env('DATABASE_URL'),
-            'host' => env('DB_HOST', '127.0.0.1'),
-            'port' => env('DB_PORT', '3306'),
-            'database' => env('DB_DATABASE', 'forge'),
-            'username' => env('DB_USERNAME', 'forge'),
-            'password' => env('DB_PASSWORD', ''),
+            'read'   => [
+                'database' => env('DB_SLAVE_DATABASE'),
+                'port' => env('DB_SLAVE_PORT','3306'),
+                'host' => env('DB_SLAVE_HOST', '127.0.0.1'),
+                'username' => env('DB_SLAVE_USERNAME', 'forge'),
+                'password' => env('DB_SLAVE_PASSWORD', ''),
+                'database' => env('DB_SLAVE_DATABASE', 'forge'),
+                'options' => extension_loaded('pdo_mysql') ? array_filter([
+                  PDO::MYSQL_ATTR_SSL_CA => env('DB_SLAVE_SSL_CA',null),
+                  PDO::MYSQL_ATTR_SSL_VERIFY_SERVER_CERT => true,
+		  PDO::ATTR_TIMEOUT => 2
+                ]) : [],
+             ],
+             'write'     => [
+                'database' => env('DB_DATABASE'),
+                'port' => env('DB_PORT','3306'),
+        	'host' => env('DB_HOST', '127.0.0.1'),
+                'username' => env('DB_USERNAME', 'forge'),
+                'password' => env('DB_PASSWORD', ''),
+                'options' => extension_loaded('pdo_mysql') ? array_filter([
+                  PDO::MYSQL_ATTR_SSL_CA => env('DB_SSL_CA',null),
+                  PDO::MYSQL_ATTR_SSL_VERIFY_SERVER_CERT => true,
+		  PDO::ATTR_TIMEOUT => 2
+                ]) : [],
+    	     ],
             'unix_socket' => env('DB_SOCKET', ''),
             'charset' => 'utf8mb4',
             'collation' => 'utf8mb4_unicode_ci',
@@ -58,10 +78,6 @@ return [
             'prefix_indexes' => true,
             'strict' => true,
             'engine' => null,
-            'options' => extension_loaded('pdo_mysql') ? array_filter([
-                PDO::MYSQL_ATTR_SSL_CA => env('DB_SSL_CA',null),
-		PDO::MYSQL_ATTR_SSL_VERIFY_SERVER_CERT => true,
-            ]) : [],
         ],
 
         'pgsql' => [
